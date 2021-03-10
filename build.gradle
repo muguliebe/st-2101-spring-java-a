@@ -1,0 +1,50 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+
+    // db
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    // database: embedded postgresql
+    runtimeOnly "org.postgresql:postgresql"
+    implementation "com.opentable.components:otj-pg-embedded:0.13.3"
+    implementation "org.flywaydb:flyway-core:6.5.3"
+
+    // log
+    implementation group: 'org.slf4j', name: 'slf4j-api'
+    implementation group: 'ch.qos.logback', name: 'logback-core'
+    implementation group: 'ch.qos.logback', name: 'logback-classic'
+
+    // dev
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

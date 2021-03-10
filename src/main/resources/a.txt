@@ -1,0 +1,16 @@
+Thread1  ---->   sync     logger   -->     sync appender
+Thread2  ---->
+Thread3  ---->
+Thread4  ---->
+
+============================================================
+
+Business log1
+Business log1
+Business log1
+Business log1
+Query Log
+Query Log
+Query Log
+Query Log
+Query Log

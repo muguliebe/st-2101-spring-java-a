@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="3 seconds">
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <property name="logHome" value="./log/"/>
+    <property name="logHomeBackup" value="./log/backup/"/>
+    <timestamp key="bySecond" datePattern="yyyyMMddHHmmss"/>
+
+    <!--
+    Console Appender
+    -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{HH:mm:ss.SSS}:%highlight(%-5p):%cyan(%c):%-5L] [%thread] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="appenderServer" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logHome}server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logHomeBackup}server.log.%d{yyMMdd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <springProfile name="local">
+                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}:%L] %m%n</pattern>
+            </springProfile>
+            <springProfile name="!local">
+                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}] %m%n</pattern>
+            </springProfile>
+        </encoder>
+        <param name="MaxBackupIndex" value="4"/>
+    </appender>
+
+    <!--
+    Service Appender
+    -->
+    <appender name="appenderService" class="ch.qos.logback.classic.sift.SiftingAppender">
+
+        <!-- MDC Value -->
+        <discriminator>
+            <key>logServiceFileName</key>
+            <defaultValue>service</defaultValue>
+        </discriminator>
+
+        <sift>
+            <!-- A standard RollingFileAppender, the log file is based on 'logFileName' at runtime  -->
+            <appender name="${logServiceFileName}" class="ch.qos.logback.core.FileAppender">
+                <file>${logHome}service/${logServiceFileName}.log</file>
+                <encoder>
+                    <charset>UTF-8</charset>
+                    <pattern>[%X{guid}][%d{HH:mm:ss.sss}:%c{0}:%L] %m%n</pattern>
+                </encoder>
+                <maxHistory>4</maxHistory>
+            </appender>
+        </sift>
+
+    </appender>
+
+    <logger name="com.example.demo.part.com.service" level="debug" additivity="true"> <appender-ref ref="appenderService"/> </logger>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="appenderServer"/>
+    </root>
+
+</configuration>
