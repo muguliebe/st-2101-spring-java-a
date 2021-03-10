@@ -10,11 +10,9 @@ public class PointCutList {
 
     @Pointcut("execution(* com.example.demo..controller..*.*(..))")
     public void allController() {
-        System.out.println("allController()");
     }
 
     @Pointcut("execution(* com.example.demo..service..*.*(..))")
     public void allService() {
-        System.out.println("allService()");
     }
 }
