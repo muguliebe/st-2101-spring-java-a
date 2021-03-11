@@ -1,6 +1,5 @@
 package com.example.fwk.pojo;
 
-import com.sun.scenario.effect.Offset;
 import lombok.Data;
 
 import javax.persistence.Id;
