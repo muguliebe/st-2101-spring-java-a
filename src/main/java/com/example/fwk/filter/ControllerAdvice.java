@@ -1,5 +1,6 @@
 package com.example.fwk.filter;
 
+import com.example.demo.entity.FwkTransactionHst;
 import com.example.fwk.base.BaseController;
 import com.example.fwk.component.TransactionService;
 import com.example.fwk.pojo.CommonArea;
@@ -24,6 +25,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Aspect
 @Component
@@ -59,8 +62,8 @@ public class ControllerAdvice {
 
 
         // main
-        serviceTr.saveTr(ca);
-        log.info("Controller Start : " + signatureName + " by " + req.getRemoteAddr());
+        CompletableFuture<FwkTransactionHst> futureTr = serviceTr.saveTr(ca);
+        log.info("Controller Start : " + signatureName + " by " + req.getRemoteAddr() + ", guid:" + ca.getGid());
         try {
             Object bc = pjp.getThis();
             if( bc instanceof BaseController ){
@@ -77,11 +80,11 @@ public class ControllerAdvice {
         } finally {
             log.info("finally..");
             ca.setEndTime(OffsetDateTime.now(ZoneId.of("+9")));
-            serviceTr.updateTr(ca);
+            serviceTr.updateTr(ca, futureTr);
         }
 
         // end
-        log.info("Controller End : " + signatureName);
+        log.info("Controller End : " + signatureName + ", guid:" + ca.getGid());
         return result;
     }
 
