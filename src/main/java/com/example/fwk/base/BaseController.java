@@ -11,7 +11,7 @@ public class BaseController {
 
     protected CommonArea ca;
 
-    protected CommonArea getCa() {
+    public CommonArea getCa() {
         if(RequestContextHolder.getRequestAttributes().getAttribute("ca", RequestAttributes.SCOPE_REQUEST) != null){
             ca = (CommonArea) RequestContextHolder.getRequestAttributes().getAttribute("ca", RequestAttributes.SCOPE_REQUEST);
         }

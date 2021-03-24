@@ -33,9 +33,9 @@ public class PrimaryDataSource {
     public DataSource embeddedPrimaryDataSource() {
 
         HikariDataSource ds = new HikariDataSource();
-        ds.setJdbcUrl("jdbc:postgresql://mugu.synology.me:55432/postgres?ssl=false&charset=utf8");
-        ds.setUsername("postgres");
-        ds.setPassword("postgres");
+        ds.setJdbcUrl("jdbc:postgresql://mugu.synology.me:55432/tmp?ssl=false&charset=utf8");
+        ds.setUsername("");
+        ds.setPassword("");
         ds.setMinimumIdle(5);
         ds.setMaximumPoolSize(100);
         ds.setIdleTimeout(3000);

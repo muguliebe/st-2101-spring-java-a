@@ -12,7 +12,14 @@ public class PointCutList {
     public void allController() {
     }
 
-    @Pointcut("execution(* com.example.demo..service..*.*(..))")
+    @Pointcut("partService() || fwkService()")
     public void allService() {
+    }
+
+    @Pointcut("execution(* com.example.demo..service..*.*(..))")
+    public void partService() {
+    }
+    @Pointcut("execution(* com.example.fwk..component..*.*(..))")
+    public void fwkService() {
     }
 }

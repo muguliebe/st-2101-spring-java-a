@@ -15,7 +15,7 @@
         <withJansi>true</withJansi>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>[%d{HH:mm:ss.SSS}:%highlight(%-5p):%cyan(%c):%-5L] [%thread] %m%n</pattern>
+            <pattern>[%d{HH:mm:ss.SSS}:%highlight(%-5p):%cyan(%c):%-5L] [%thread][%X{z1}][%property{z2}] %m%n</pattern>
         </encoder>
     </appender>
 
@@ -27,10 +27,10 @@
         <encoder>
             <charset>UTF-8</charset>
             <springProfile name="local">
-                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}:%L] %m%n</pattern>
+                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}:%L] %[%thread][%X{z1}][%property{z2}] m%n</pattern>
             </springProfile>
             <springProfile name="!local">
-                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}] %m%n</pattern>
+                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}] [%thread][%X{z1}][%property{z2}] %m%n</pattern>
             </springProfile>
         </encoder>
         <param name="MaxBackupIndex" value="4"/>
@@ -53,7 +53,7 @@
                 <file>${logHome}service/${logServiceFileName}.log</file>
                 <encoder>
                     <charset>UTF-8</charset>
-                    <pattern>[%X{guid}][%d{HH:mm:ss.sss}:%c{0}:%L] %m%n</pattern>
+                    <pattern>[%d{HH:mm:ss.sss}:%c{0}:%L] [%thread][%X{z1}][%property{z2}]%m%n</pattern>
                 </encoder>
                 <maxHistory>4</maxHistory>
             </appender>
@@ -61,11 +61,14 @@
 
     </appender>
 
+    <appender name="custom" class="com.example.fwk.log.MapAppender"/>
+
     <logger name="com.example.demo.part.com.service" level="debug" additivity="true"> <appender-ref ref="appenderService"/> </logger>
 
     <root level="info">
         <appender-ref ref="console"/>
         <appender-ref ref="appenderServer"/>
+        <appender-ref ref="custom"/>
     </root>
 
 </configuration>

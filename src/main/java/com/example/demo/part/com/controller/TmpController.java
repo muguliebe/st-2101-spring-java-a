@@ -32,11 +32,11 @@ public class TmpController extends BaseController {
             list.add(iterator.next());
         }
 
-        log.info(ca.getAppName());
-        log.info(ca.getHostName());
-        log.info(ca.getMethod());
-        log.info(String.valueOf(ca.isBLocal()));
-        log.info(String.valueOf(ca.isBDev()));
+//        log.info(ca.getAppName());
+//        log.info(ca.getHostName());
+//        log.info(ca.getMethod());
+//        log.info(String.valueOf(ca.isBLocal()));
+//        log.info(String.valueOf(ca.isBDev()));
 
         return list;
     }

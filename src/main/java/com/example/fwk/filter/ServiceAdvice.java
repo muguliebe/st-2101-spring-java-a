@@ -1,6 +1,7 @@
 package com.example.fwk.filter;
 
 import ch.qos.logback.classic.Logger;
+import com.example.fwk.pojo.CommonArea;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
@@ -9,6 +10,7 @@ import org.aspectj.lang.annotation.Before;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -33,14 +35,22 @@ public class ServiceAdvice {
         System.out.println("cocoa logService : " + pjp.getThis().getClass());
         String className = pjp.getSignature().getDeclaringType().getSimpleName(); // 클래스명만..
 
-        String bf = MDC.get(logServiceFileName);
 
-        MDC.put(guid, UUID.randomUUID().toString());
+        CommonArea ca = null;
+        if (RequestContextHolder.getRequestAttributes() != null) {
+            if (RequestContextHolder.getRequestAttributes().getAttribute("ca", RequestAttributes.SCOPE_REQUEST) != null) {
+                ca = (CommonArea) RequestContextHolder.getRequestAttributes().getAttribute("ca", RequestAttributes.SCOPE_REQUEST);
+            }
+        }
+
+        String bf = MDC.get(logServiceFileName);
         MDC.put(logServiceFileName, className);
+        if (ca != null)
+            MDC.put("z1", ca.getGid());
 
         String signatureName = pjp.getSignature().getDeclaringType().getSimpleName() + "." + pjp.getSignature().getName();
         String args = "";
-        for(Object arg : pjp.getArgs()) {
+        for (Object arg : pjp.getArgs()) {
             args += arg.toString() + ".";
         }
 

@@ -1,5 +1,7 @@
 package com.example.fwk.filter;
 
+import ch.qos.logback.classic.LoggerContext;
+import com.example.demo.entity.FwkTransactionHst;
 import com.example.fwk.base.BaseController;
 import com.example.fwk.component.TransactionService;
 import com.example.fwk.pojo.CommonArea;
@@ -7,6 +9,8 @@ import lombok.extern.java.Log;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -24,6 +28,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Aspect
 @Component
@@ -51,15 +57,20 @@ public class ControllerAdvice {
         RequestContextHolder.getRequestAttributes().setAttribute("ca", ca, RequestAttributes.SCOPE_REQUEST);
 
         // setStatic
-        if (!bSetStatic)
+        if (!bSetStatic) {
             setStaticVariable();
+        }
 
         // setCommonArea
         setCommonArea(req, ca);
+        // add MDC
+        MDC.put("z1", ca.getGid());
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.putProperty("z2", ca.getGid());
 
 
         // main
-        serviceTr.saveTr(ca);
+        CompletableFuture<FwkTransactionHst> futureTr = serviceTr.saveTr(ca);
         log.info("Controller Start : " + signatureName + " by " + req.getRemoteAddr());
         try {
             Object bc = pjp.getThis();
@@ -75,9 +86,8 @@ public class ControllerAdvice {
             ca.setStatusCode("500");
 
         } finally {
-            log.info("finally..");
             ca.setEndTime(OffsetDateTime.now(ZoneId.of("+9")));
-            serviceTr.updateTr(ca);
+            serviceTr.updateTr(ca, futureTr);
         }
 
         // end

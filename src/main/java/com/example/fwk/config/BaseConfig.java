@@ -16,9 +16,9 @@ public class BaseConfig {
     @Bean
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1000);
-        executor.setMaxPoolSize(1000);
-        executor.setQueueCapacity(10000);
+        executor.setCorePoolSize(10000);
+        executor.setMaxPoolSize(10000);
+        executor.setQueueCapacity(30000);
         executor.setThreadNamePrefix("thread-");
         executor.initialize();
         return executor;

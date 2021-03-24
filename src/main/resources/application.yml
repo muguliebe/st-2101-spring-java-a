@@ -1,0 +1,17 @@
+app:
+  version: 0.1
+  host: localhot:5000
+db:
+  common:
+    minIdle: 5
+    maxPoolSize: 10
+    idleTimeout: 10000
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+  mybatis:
+    common:
+      driver-class-name: org.postgresql.Driver
+      idleTimeout: 10000
+    public:
+      url: jdbc:postgresql://localhost:5432/postgres?ssl=false&charset=utf8
+      user: postgres
+      password: postgres

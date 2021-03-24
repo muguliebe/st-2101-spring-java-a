@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Log
@@ -19,15 +21,24 @@ public class TransactionService {
     @Autowired TransactionRepo repo;
 
     @Async
-    public void saveTr(CommonArea commons) {
-        log.info("saveTr start");
-        FwkTransactionHst tr = convertTr(commons);
-        repo.save(tr);
+    public CompletableFuture<FwkTransactionHst> saveTr(CommonArea commons) {
+        return CompletableFuture.supplyAsync(() -> {
+            log.info("saveTr start:" + commons.getGid());
+            FwkTransactionHst tr = convertTr(commons);
+            return repo.save(tr);
+        });
     }
 
     @Async
-    public void updateTr(CommonArea commons) {
-        log.info("updateTr start");
+    public void updateTr(CommonArea commons, CompletableFuture<FwkTransactionHst> futureTr) {
+
+        try {
+            futureTr.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        log.info("updateTr start:" + commons.getGid());
         FwkTransactionHstId id = new FwkTransactionHstId();
         id.setTransactionDate(commons.getTransactionDate());
         id.setAppName(commons.getAppName());
