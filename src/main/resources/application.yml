@@ -1,6 +1,7 @@
 app:
   version: 0.1
   host: localhot:5000
+  name: demo
 db:
   common:
     minIdle: 5
@@ -17,5 +18,3 @@ db:
       password: postgres
 server:
   port: 8088
-app:
-  name: demo

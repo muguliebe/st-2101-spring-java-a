@@ -61,14 +61,14 @@
 
     </appender>
 
-    <appender name="custom" class="com.example.fwk.log.MapAppender"/>
+<!--    <appender name="custom" class="com.example.fwk.log.MapAppender"/>-->
 
     <logger name="com.example.demo.part.com.service" level="debug" additivity="true"> <appender-ref ref="appenderService"/> </logger>
 
     <root level="info">
         <appender-ref ref="console"/>
         <appender-ref ref="appenderServer"/>
-        <appender-ref ref="custom"/>
+<!--        <appender-ref ref="custom"/>-->
     </root>
 
 </configuration>
