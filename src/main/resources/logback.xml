@@ -27,7 +27,7 @@
         <encoder>
             <charset>UTF-8</charset>
             <springProfile name="local">
-                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}:%L] %[%thread][%X{z1}][%property{z2}] m%n</pattern>
+                <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}:%L] [%thread][%X{z1}][%property{z2}] m%n</pattern>
             </springProfile>
             <springProfile name="!local">
                 <pattern>[%d{HH:mm:ss.SSS}:%-5p:%c{0}] [%thread][%X{z1}][%property{z2}] %m%n</pattern>
