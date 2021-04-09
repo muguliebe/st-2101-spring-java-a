@@ -6,7 +6,9 @@ import com.example.demo.repo.jpa.TmpRepo;
 import com.example.demo.util.StringUtils;
 import com.example.fwk.base.BaseController;
 import com.example.fwk.pojo.CommonArea;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import java.util.Iterator;
 public class TmpController extends BaseController {
 
     @Autowired TmpRepo repo;
+    @Autowired ApplicationContext ctx;
 
     @GetMapping
     public ArrayList<Tmp> getAll() {
