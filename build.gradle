@@ -43,6 +43,11 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-core'
     implementation group: 'ch.qos.logback', name: 'logback-classic'
 
+    // etc
+    implementation group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.3'
+
+
     // dev
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly 'org.projectlombok:lombok'

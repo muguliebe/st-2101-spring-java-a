@@ -3,6 +3,7 @@ package com.example.demo.part.com.controller;
 
 import com.example.demo.entity.Tmp;
 import com.example.demo.repo.jpa.TmpRepo;
+import com.example.demo.util.StringUtils;
 import com.example.fwk.base.BaseController;
 import com.example.fwk.pojo.CommonArea;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class TmpController extends BaseController {
         Iterable<Tmp> it = repo.findAll();
         Iterator<Tmp> iterator = it.iterator();
 
+        StringUtils.goodjob();
 
         // 1
         ArrayList<Tmp> list = new ArrayList<>();
@@ -41,4 +43,5 @@ public class TmpController extends BaseController {
 
         return list;
     }
+
 }

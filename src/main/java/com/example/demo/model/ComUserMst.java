@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
+import lombok.Data;
+
+@Data
 public class ComUserMst {
     Integer userId;
-    String name;
-    String sex;
-    Integer age;
+    String userName;
 }
+
 

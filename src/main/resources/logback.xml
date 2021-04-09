@@ -64,6 +64,7 @@
 <!--    <appender name="custom" class="com.example.fwk.log.MapAppender"/>-->
 
     <logger name="com.example.demo.part.com.service" level="debug" additivity="true"> <appender-ref ref="appenderService"/> </logger>
+    <logger name="com.example.demo.repo.mybatis" level="debug" additivity="true"> </logger>
 
     <root level="info">
         <appender-ref ref="console"/>

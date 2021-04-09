@@ -2,6 +2,7 @@ package com.example.fwk.config.db;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -30,15 +31,21 @@ public class PrimaryDataSource {
 
     @Bean(name = "tmpDataSource")
     @Order(Ordered.LOWEST_PRECEDENCE)
-    public DataSource tmpDataSource() {
+    public DataSource tmpDataSource(@Value("${db.mybatis.tmp.url}") String url,
+                                    @Value("${db.mybatis.tmp.user}") String userName,
+                                    @Value("${db.mybatis.tmp.password}") String password,
+                                    @Value("${db.common.minIdle}") Integer minIdle,
+                                    @Value("${db.common.maxPoolSize}") Integer maxPoolSize,
+                                    @Value("${db.common.idleTimeout}") Integer idleTimeout
+                                    ) {
 
         HikariDataSource ds = new HikariDataSource();
-        ds.setJdbcUrl("jdbc:postgresql://mugu.synology.me:55432/tmp?ssl=false&charset=utf8");
-        ds.setUsername("");
-        ds.setPassword("");
-        ds.setMinimumIdle(5);
-        ds.setMaximumPoolSize(100);
-        ds.setIdleTimeout(3000);
+        ds.setJdbcUrl(url);
+        ds.setUsername(userName);
+        ds.setPassword(password);
+        ds.setMinimumIdle(minIdle);
+        ds.setMaximumPoolSize(maxPoolSize);
+        ds.setIdleTimeout(idleTimeout);
         ds.setConnectionInitSql("set time zone 'Asia/Seoul'");
 
         return ds;
@@ -46,7 +53,9 @@ public class PrimaryDataSource {
 
     @Bean(name = "entityManagerFactory")
     @Order(Ordered.LOWEST_PRECEDENCE)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("tmpDataSource") DataSource ds) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("tmpDataSource") DataSource ds,
+                                                                       @Value("${db.common.dialect}") String dialect
+                                                                       ) {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -56,7 +65,7 @@ public class PrimaryDataSource {
         properties.put("hibernate.default_schema", "public");
         properties.put("hibernate.hbm2ddl.auto", "none");
         properties.put("hibernate.ddl-auto", "none");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.put("hibernate.dialect", dialect);
         properties.put("hibernate.physical_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         properties.put("hibernate.cache.use_second_level_cache", false);
         properties.put("hibernate.cache.use_query_cache", false);

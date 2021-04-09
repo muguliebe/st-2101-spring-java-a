@@ -2,6 +2,20 @@ app:
   version: 0.1
   host: localhot:5000
   name: demo
+  secret: secret
+jasypt:
+  encryptor:
+    bean: jasyptEncrypt
+server:
+  port: 8088
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  flyway:
+    enabled: false
 db:
   common:
     minIdle: 5
@@ -12,9 +26,7 @@ db:
     common:
       driver-class-name: org.postgresql.Driver
       idleTimeout: 10000
-    public:
-      url: jdbc:postgresql://localhost:5432/postgres?ssl=false&charset=utf8
-      user: postgres
-      password: postgres
-server:
-  port: 8088
+    tmp:
+      url: jdbc:postgresql://mugu.synology.me:55432/tmp?ssl=false&charset=utf8
+      user: tmp
+      password: ENC(ffxP4JdVIHGh66g2PecuVg==)

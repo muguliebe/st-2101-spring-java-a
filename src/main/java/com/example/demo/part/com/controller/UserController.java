@@ -2,7 +2,9 @@ package com.example.demo.part.com.controller;
 
 
 import com.example.demo.entity.UserMst;
+import com.example.demo.model.ComUserMst;
 import com.example.demo.repo.jpa.UserRepo;
+import com.example.demo.repo.mybatis.UserMapper;
 import com.example.fwk.base.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,9 +56,12 @@ public class UserController extends BaseController {
 //    }
 
     @GetMapping("/{id}")
-    public ComUserMst getUser(@PathVariable("id") Integer id){
+    public ComUserMst getUser(@PathVariable("id") String id) throws Exception {
 
-        mapper.selectUserOne(id)
+        ComUserMst result = mapper.selectUserOne(Integer.valueOf(id));
+        if(result == null){
+            throw new Exception("there is no user");
+        }
 
         return result;
     }
