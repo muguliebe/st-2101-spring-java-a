@@ -28,9 +28,9 @@ import java.util.HashMap;
         transactionManagerRef = "publicTransactionManager")
 public class PrimaryDataSource {
 
-    @Bean(name = "embeddedPrimaryDataSource")
+    @Bean(name = "tmpDataSource")
     @Order(Ordered.LOWEST_PRECEDENCE)
-    public DataSource embeddedPrimaryDataSource() {
+    public DataSource tmpDataSource() {
 
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl("jdbc:postgresql://mugu.synology.me:55432/tmp?ssl=false&charset=utf8");
@@ -46,7 +46,7 @@ public class PrimaryDataSource {
 
     @Bean(name = "entityManagerFactory")
     @Order(Ordered.LOWEST_PRECEDENCE)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("embeddedPrimaryDataSource") DataSource ds) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("tmpDataSource") DataSource ds) {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -76,7 +76,7 @@ public class PrimaryDataSource {
     @Bean(name = "publicTransactionManager")
     @Order(Ordered.LOWEST_PRECEDENCE)
     public PlatformTransactionManager transactionManager(@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory,
-                                                         @Qualifier("embeddedPrimaryDataSource") DataSource dataSource
+                                                         @Qualifier("tmpDataSource") DataSource dataSource
     ) {
         JpaTransactionManager jtm = new JpaTransactionManager(entityManagerFactory);
         DataSourceTransactionManager dstm = new DataSourceTransactionManager();

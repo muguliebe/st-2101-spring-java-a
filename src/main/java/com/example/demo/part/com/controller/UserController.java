@@ -16,6 +16,7 @@ import java.util.Optional;
 public class UserController extends BaseController {
 
     @Autowired UserRepo repo;
+    @Autowired UserMapper mapper;
 
     @GetMapping
     public ArrayList<UserMst> getAll() {
@@ -43,14 +44,23 @@ public class UserController extends BaseController {
         return result;
     }
 
-    @GetMapping("/{id}")
-    public UserMst getUser(@PathVariable("id") Integer id){
+//    @GetMapping("/{id}")
+//    public UserMst getUser(@PathVariable("id") Integer id){
+//
+//        Optional<UserMst> byId = repo.findById(id);
+//        UserMst result = byId.get();
+//
+//        return result;
+//    }
 
-        Optional<UserMst> byId = repo.findById(id);
-        UserMst result = byId.get();
+    @GetMapping("/{id}")
+    public ComUserMst getUser(@PathVariable("id") Integer id){
+
+        mapper.selectUserOne(id)
 
         return result;
     }
+
 
     @PutMapping("/{id}")
     public UserMst updateUser(@PathVariable("id") Integer id, @RequestBody UserMst updateUser) throws Exception {
