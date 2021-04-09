@@ -67,6 +67,7 @@ public class ControllerAdvice {
         MDC.put("z1", ca.getGid());
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.putProperty("z2", ca.getGid());
+        loggerContext.putProperty("z3", Thread.currentThread().getName());
 
 
         // main
@@ -74,10 +75,6 @@ public class ControllerAdvice {
         log.info("Controller Start : " + signatureName + " by " + req.getRemoteAddr());
         try {
             Object bc = pjp.getThis();
-            if( bc instanceof BaseController ){
-                BaseController base = (BaseController) bc;
-                base.setCa();
-            }
 
             result = pjp.proceed();
         } catch (Throwable throwable) {

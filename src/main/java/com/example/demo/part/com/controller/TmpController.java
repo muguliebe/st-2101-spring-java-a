@@ -26,6 +26,7 @@ public class TmpController extends BaseController {
         Iterable<Tmp> it = repo.findAll();
         Iterator<Tmp> iterator = it.iterator();
 
+
         // 1
         ArrayList<Tmp> list = new ArrayList<>();
         while(iterator.hasNext()){

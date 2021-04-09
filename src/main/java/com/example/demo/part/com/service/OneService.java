@@ -10,4 +10,5 @@ public class OneService extends BaseService {
         log.info("good job");
         return "good";
     }
+
 }
